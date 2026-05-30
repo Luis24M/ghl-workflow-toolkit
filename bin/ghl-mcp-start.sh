@@ -8,13 +8,14 @@
 #    user at the /ghl-workflow-toolkit:start wizard and exit cleanly.
 # 4. Ensure the BusyBee3333 MCP is installed + patched + built under
 #    $CLAUDE_PLUGIN_DATA/ghl-mcp (~3 min one-time cost). Subsequent runs: instant.
-# 5. Exec node on dist/main.js.
+# 5. Exec node on dist/server.js (stdio transport — Claude Code uses stdio,
+#    NOT dist/main.js which is the HTTP/SSE variant).
 
 set -euo pipefail
 
 CREDS_FILE="${HOME}/.ghl-workflow-toolkit/credentials.env"
 MCP_DIR="${CLAUDE_PLUGIN_DATA:-${HOME}/.claude/plugins/data/ghl-workflow-toolkit}/ghl-mcp"
-MAIN="${MCP_DIR}/dist/main.js"
+MAIN="${MCP_DIR}/dist/server.js"
 PATCH="${CLAUDE_PLUGIN_ROOT}/patches/workflow-builder-client.diff"
 STAMP="${MCP_DIR}/.patched"
 

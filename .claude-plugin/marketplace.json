@@ -9,7 +9,7 @@
       "name": "ghl-workflow-toolkit",
       "source": "./",
       "description": "GHL automation toolkit (patched MCP + canonical workflow schemas + API quirks reference).",
-      "version": "0.1.3"
+      "version": "0.1.4"
     }
   ]
 }

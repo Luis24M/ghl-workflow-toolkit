@@ -1,6 +1,6 @@
 {
   "name": "ghl-workflow-toolkit",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "GoHighLevel automation toolkit for Claude Code — bundles the BusyBee3333 MCP server (patched for correct workflow chaining), canonical workflow action schemas, API quirks reference, and Firebase auth setup. Works with any GHL account.",
   "author": {
     "name": "Luis Morales",
