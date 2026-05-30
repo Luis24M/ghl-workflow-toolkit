@@ -1,0 +1,79 @@
+diff --git a/src/clients/workflow-builder-client.ts b/src/clients/workflow-builder-client.ts
+index 94a01b3..d6de071 100644
+--- a/src/clients/workflow-builder-client.ts
++++ b/src/clients/workflow-builder-client.ts
+@@ -20,7 +20,8 @@ export interface WorkflowAction {
+   name: string;
+   type: string;
+   attributes?: Record<string, unknown>;
+-  next?: string[];
++  // string for sequential (single next); array only for actual branching (if_else, etc.)
++  next?: string | string[];
+   parentKey?: string;
+   parent?: string;
+   cat?: string;
+@@ -367,19 +368,23 @@ export class WorkflowBuilderClient {
+       ? this.buildActionChain(update.actions)
+       : current.workflowData?.templates || [];
+ 
+-    // Build triggers
++    // Build triggers — only include id if explicitly provided (otherwise GHL
++    // backend tries to UPDATE a non-existent Firestore doc and fails with 5 NOT_FOUND).
+     const newTriggers = update.triggers
+-      ? update.triggers.map(t => ({
+-          id: t.id || randomUUID(),
+-          type: t.type,
+-          name: t.name || t.type.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
+-          workflowId,
+-          data: {
++      ? update.triggers.map(t => {
++          const obj: Record<string, unknown> = {
+             type: t.type,
+-            targetActionId: actions[0]?.id,
+-            ...(t.data || {}),
+-          },
+-        }))
++            name: t.name || t.type.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
++            workflowId,
++            data: {
++              type: t.type,
++              targetActionId: actions[0]?.id,
++              ...(t.data || {}),
++            },
++          };
++          if (t.id) obj.id = t.id;
++          return obj;
++        })
+       : undefined;
+ 
+     const createdSteps = update.actions
+@@ -506,22 +511,24 @@ export class WorkflowBuilderClient {
+       attributes: a.attributes || {},
+     }));
+ 
+-    // Second pass: wire up next/parentKey for actions that don't have explicit linkage
++    // Second pass: wire up next/parentKey for actions that don't have explicit linkage.
++    // Use STRING for sequential next (GHL UI treats array as branching, which breaks
++    // Time Delay waits with "no admite la ramificación" error).
+     return withIds.map((a, i, arr) => {
+       const original = rawActions[i];
+       const hasExplicitNext = original.next !== undefined;
+       const hasExplicitParent = original.parentKey !== undefined;
+ 
+-      let nextArr: string[] | undefined;
++      let nextValue: string | string[] | undefined;
+       if (hasExplicitNext) {
+-        nextArr = Array.isArray(original.next) ? original.next : undefined;
++        nextValue = original.next; // preserve caller's format (string or array)
+       } else if (i < arr.length - 1) {
+-        nextArr = [arr[i + 1].id!];
++        nextValue = arr[i + 1].id!; // canonical sequential chaining = string
+       }
+ 
+       return {
+         ...a,
+-        next: nextArr,
++        next: nextValue,
+         parentKey: hasExplicitParent
+           ? a.parentKey
+           : (i > 0 ? arr[i - 1].id : undefined),

@@ -1,0 +1,15 @@
+{
+  "name": "ghl-italian-dental",
+  "owner": {
+    "name": "Luis Morales",
+    "email": "handel.development.team@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "ghl-italian-dental",
+      "source": "./",
+      "description": "GHL toolkit for Italian dental clinics (MCP + workflow schemas + setup automation).",
+      "version": "0.1.0"
+    }
+  ]
+}

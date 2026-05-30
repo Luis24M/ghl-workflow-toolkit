@@ -1,0 +1,48 @@
+{
+  "name": "ghl-italian-dental",
+  "version": "0.1.0",
+  "description": "GoHighLevel toolkit for Italian dental clinics — bundles the BusyBee3333 MCP server (patched), canonical workflow schemas, API quirks reference, and Firebase auth setup.",
+  "author": "Luis Morales <handel.development.team@gmail.com>",
+  "homepage": "https://github.com/luismorales/ghl-italian-dental",
+  "userConfig": [
+    {
+      "key": "pit",
+      "label": "Sub-account PIT token (Private Integration Token)",
+      "type": "string",
+      "sensitive": true,
+      "required": true,
+      "description": "From GHL → Settings → Private Integrations → Create New (all scopes)."
+    },
+    {
+      "key": "location_id",
+      "label": "Sub-account Location ID",
+      "type": "string",
+      "required": true,
+      "description": "Visible in the URL when you are inside the sub-account."
+    },
+    {
+      "key": "firebase_api_key",
+      "label": "Firebase API key",
+      "type": "string",
+      "sensitive": true,
+      "required": true,
+      "description": "Captured from the IndexedDB snippet (DevTools console)."
+    },
+    {
+      "key": "firebase_refresh_token",
+      "label": "Firebase refresh token",
+      "type": "string",
+      "sensitive": true,
+      "required": true,
+      "description": "Captured from the IndexedDB snippet (lasts weeks; re-capture if it expires)."
+    },
+    {
+      "key": "agency_pit",
+      "label": "Agency PIT token (optional)",
+      "type": "string",
+      "sensitive": true,
+      "required": false,
+      "description": "Only needed if you will operate at the agency level (push snapshots, create sub-accounts, list locations)."
+    }
+  ]
+}

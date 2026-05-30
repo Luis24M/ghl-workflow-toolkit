@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "ghl": {
+      "command": "bash",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/bin/ghl-mcp-start.sh"],
+      "env": {
+        "GHL_API_KEY": "${user_config.pit}",
+        "GHL_LOCATION_ID": "${user_config.location_id}",
+        "GHL_AGENCY_API_KEY": "${user_config.agency_pit}",
+        "GHL_FIREBASE_API_KEY": "${user_config.firebase_api_key}",
+        "GHL_FIREBASE_REFRESH_TOKEN": "${user_config.firebase_refresh_token}",
+        "CLAUDE_PLUGIN_DATA": "${CLAUDE_PLUGIN_DATA}",
+        "CLAUDE_PLUGIN_ROOT": "${CLAUDE_PLUGIN_ROOT}"
+      }
+    }
+  }
+}
