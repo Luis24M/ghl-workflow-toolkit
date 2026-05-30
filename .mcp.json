@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "ghl": {
+    "ghl-toolkit": {
       "command": "bash",
       "args": ["${CLAUDE_PLUGIN_ROOT}/bin/ghl-mcp-start.sh"],
       "env": {
