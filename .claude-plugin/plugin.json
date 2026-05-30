@@ -1,48 +1,47 @@
 {
   "name": "ghl-workflow-toolkit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "GoHighLevel automation toolkit for Claude Code — bundles the BusyBee3333 MCP server (patched for correct workflow chaining), canonical workflow action schemas, API quirks reference, and Firebase auth setup. Works with any GHL account.",
-  "author": "Luis Morales <handel.development.team@gmail.com>",
+  "author": {
+    "name": "Luis Morales",
+    "email": "handel.development.team@gmail.com",
+    "url": "https://github.com/Luis24M"
+  },
   "homepage": "https://github.com/Luis24M/ghl-workflow-toolkit",
-  "userConfig": [
-    {
-      "key": "pit",
+  "userConfig": {
+    "pit": {
       "label": "Sub-account PIT (recommended: skip, use /ghl-workflow-toolkit:start)",
       "type": "string",
       "sensitive": true,
       "required": false,
       "description": "Optional at install time. Run /ghl-workflow-toolkit:start after install — the wizard captures all credentials interactively and writes them to ~/.ghl-workflow-toolkit/credentials.env."
     },
-    {
-      "key": "location_id",
+    "location_id": {
       "label": "Sub-account Location ID",
       "type": "string",
       "required": false,
       "description": "Visible in the URL when you are inside the sub-account."
     },
-    {
-      "key": "firebase_api_key",
+    "firebase_api_key": {
       "label": "Firebase API key",
       "type": "string",
       "sensitive": true,
       "required": false,
       "description": "Captured from the IndexedDB snippet (DevTools console)."
     },
-    {
-      "key": "firebase_refresh_token",
+    "firebase_refresh_token": {
       "label": "Firebase refresh token",
       "type": "string",
       "sensitive": true,
       "required": false,
       "description": "Captured from the IndexedDB snippet (lasts weeks; re-capture if it expires)."
     },
-    {
-      "key": "agency_pit",
+    "agency_pit": {
       "label": "Agency PIT token (optional)",
       "type": "string",
       "sensitive": true,
       "required": false,
       "description": "Only needed if you will operate at the agency level (push snapshots, create sub-accounts, list locations)."
     }
-  ]
+  }
 }
