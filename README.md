@@ -9,74 +9,54 @@ Bundles:
 - **GHL MCP server** ([BusyBee3333 fork](https://github.com/BusyBee3333/Go-High-Level-MCP-2026-Complete), patched for correct workflow chaining) — 834 tools across contacts, workflows, calendars, opportunities, messaging.
 - **Canonical workflow schemas** as an auto-loaded skill — the MCP's own tool descriptions are incomplete; this skill has the verified-working JSON for `wait` (time + appointment), `if_else` 3-node branching, `sms`, `email`, `add_tag`.
 - **API quirks reference** — `MONETARY → MONETORY`, what's UI-only (forms, pipelines, snapshots, SMS templates), rate limits, the Firebase auth flow.
-- **`/refresh-firebase-token` command** — to update Firebase tokens when they expire (every few weeks).
+- **`/ghl-workflow-toolkit:start`** — interactive setup wizard that captures your credentials step-by-step. **No technical knowledge needed.**
+- **`/ghl-workflow-toolkit:refresh-firebase-token`** — to update the Firebase token when it expires (every few weeks).
 
 ---
 
-## Installation (3 minutes)
+## Installation
 
-### Step 1 — Capture your Firebase tokens
+### Step 1 — Tell Claude to install the plugin
 
-This is the **only manual step**. Claude cannot do this for you because it needs your logged-in GHL browser session.
-
-1. Open `app.gohighlevel.com` in your browser and **log in**.
-2. Press **F12** (Mac: **Cmd+Option+I**). Click the **Console** tab.
-3. Paste this snippet and press Enter:
-
-```javascript
-(() => {
-  const req = indexedDB.open('firebaseLocalStorageDb');
-  req.onsuccess = () => {
-    const all = req.result.transaction('firebaseLocalStorage', 'readonly')
-      .objectStore('firebaseLocalStorage').getAll();
-    all.onsuccess = () => {
-      for (const item of all.result) {
-        const v = item.value ?? item;
-        if (v?.stsTokenManager?.refreshToken) {
-          console.log('FIREBASE_API_KEY=' + v.apiKey);
-          console.log('FIREBASE_REFRESH_TOKEN=' + v.stsTokenManager.refreshToken);
-          return;
-        }
-      }
-    };
-  };
-})();
-```
-
-4. Copy the two `FIREBASE_…=` lines printed.
-
-### Step 2 — Tell Claude to install the plugin
-
-Open Claude Code and paste this (substituting your actual values):
+Open Claude Code (any directory) and paste:
 
 ```
-Install the ghl-workflow-toolkit plugin from
-https://github.com/Luis24M/ghl-workflow-toolkit
-with these credentials:
-
-PIT=pit-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-LOCATION_ID=<your-sub-account-location-id>
-FIREBASE_API_KEY=AIzaSy...
-FIREBASE_REFRESH_TOKEN=AMf-vBy...
+Instalá el plugin ghl-workflow-toolkit desde
+https://github.com/Luis24M/ghl-workflow-toolkit. Cuando termines de
+instalarlo, corré /ghl-workflow-toolkit:start para arrancar el wizard.
 ```
 
-Claude will:
-1. Run `/plugin marketplace add https://github.com/Luis24M/ghl-workflow-toolkit`
-2. Run `/plugin install ghl-workflow-toolkit@ghl-workflow-toolkit`
-3. Write the credentials to `~/.claude/settings.json` under the plugin's `userConfig`.
-4. Tell you to restart Claude Code.
+Claude will run:
+1. `/plugin marketplace add https://github.com/Luis24M/ghl-workflow-toolkit`
+2. `/plugin install ghl-workflow-toolkit@ghl-workflow-toolkit`
+3. `/ghl-workflow-toolkit:start`
+
+The first two complete in seconds and don't require any credentials (the userConfig prompts are all optional — you can hit Enter on all of them).
+
+### Step 2 — Follow the wizard
+
+The `/ghl-workflow-toolkit:start` wizard will walk you through:
+
+1. **PIT** (Private Integration Token) — it tells you exactly where to click in GHL to create one.
+2. **Location ID** — it tells you how to read it from the URL.
+3. **Firebase API key + refresh token** — it gives you a JS snippet to paste in DevTools and copy 2 lines back.
+4. **Agency PIT** (optional) — skip if you don't have one.
+
+At the end, the wizard writes everything to `~/.ghl-workflow-toolkit/credentials.env` (mode 600) and tells you to restart Claude Code.
 
 ### Step 3 — Restart Claude Code
 
-Close and reopen. On first start, the MCP server self-bootstraps once (~3 min: clones the upstream MCP, npm installs, applies the workflow-chaining patch, builds). Subsequent startups are instant.
+Close and reopen.
+
+The **first start** after credentials are set takes ~3 min: the MCP server self-bootstraps once (clones the upstream MCP, npm installs, applies the workflow-chaining patch, builds). Subsequent startups are instant.
 
 ### Step 4 — Test
 
 In Claude Code:
 
-> List the locations under my GHL agency.
+> Listame las locations de mi GHL.
 
-If it returns your locations, everything is wired up.
+If it returns your locations, everything is wired up. 🎉
 
 ---
 
@@ -98,15 +78,15 @@ Example prompts:
 
 ---
 
-## When the Firebase token expires (every few weeks)
+## Re-configuring or recovering credentials
 
-You will start seeing 401 errors. Run:
+| When | Command |
+|------|---------|
+| Initial setup | `/ghl-workflow-toolkit:start` |
+| Firebase token expired (401 errors) | `/ghl-workflow-toolkit:refresh-firebase-token` |
+| Want to change PIT, Location, or anything else | Re-run `/ghl-workflow-toolkit:start` (overwrites the credentials file) |
 
-```
-/refresh-firebase-token
-```
-
-Follow the steps it prints (same as Step 1 above). Paste the new values and Claude updates `~/.claude/settings.json`. Restart and you are back.
+Both wizards write to the same file: `~/.ghl-workflow-toolkit/credentials.env`. You can also edit it manually if you prefer.
 
 ---
 
@@ -136,13 +116,14 @@ Follow the steps it prints (same as Step 1 above). Paste the new values and Clau
 ```
 ghl-workflow-toolkit/
 ├── .claude-plugin/
-│   ├── plugin.json           # Manifest + userConfig for credentials
+│   ├── plugin.json           # Manifest; userConfig is all optional
 │   └── marketplace.json      # Single-plugin marketplace
-├── .mcp.json                 # MCP server config (uses ${user_config.*})
+├── .mcp.json                 # MCP server config (uses ${user_config.*} as fallback)
 ├── bin/
-│   └── ghl-mcp-start.sh      # Smart wrapper: self-installs the MCP on first run
+│   └── ghl-mcp-start.sh      # Smart wrapper: sources credentials, self-installs MCP
 ├── commands/
-│   └── refresh-firebase-token.md
+│   ├── start.md              # Setup wizard (THE main UX)
+│   └── refresh-firebase-token.md  # Token rotation helper
 ├── patches/
 │   └── workflow-builder-client.diff  # Fix for sequential next chaining
 ├── skills/

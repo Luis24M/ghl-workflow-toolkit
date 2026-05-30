@@ -7,17 +7,17 @@
   "userConfig": [
     {
       "key": "pit",
-      "label": "Sub-account PIT token (Private Integration Token)",
+      "label": "Sub-account PIT (recommended: skip, use /ghl-workflow-toolkit:start)",
       "type": "string",
       "sensitive": true,
-      "required": true,
-      "description": "From GHL → Settings → Private Integrations → Create New (all scopes)."
+      "required": false,
+      "description": "Optional at install time. Run /ghl-workflow-toolkit:start after install — the wizard captures all credentials interactively and writes them to ~/.ghl-workflow-toolkit/credentials.env."
     },
     {
       "key": "location_id",
       "label": "Sub-account Location ID",
       "type": "string",
-      "required": true,
+      "required": false,
       "description": "Visible in the URL when you are inside the sub-account."
     },
     {
@@ -25,7 +25,7 @@
       "label": "Firebase API key",
       "type": "string",
       "sensitive": true,
-      "required": true,
+      "required": false,
       "description": "Captured from the IndexedDB snippet (DevTools console)."
     },
     {
@@ -33,7 +33,7 @@
       "label": "Firebase refresh token",
       "type": "string",
       "sensitive": true,
-      "required": true,
+      "required": false,
       "description": "Captured from the IndexedDB snippet (lasts weeks; re-capture if it expires)."
     },
     {
