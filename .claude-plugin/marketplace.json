@@ -1,14 +1,14 @@
 {
-  "name": "ghl-italian-dental",
+  "name": "ghl-workflow-toolkit",
   "owner": {
     "name": "Luis Morales",
     "email": "handel.development.team@gmail.com"
   },
   "plugins": [
     {
-      "name": "ghl-italian-dental",
+      "name": "ghl-workflow-toolkit",
       "source": "./",
-      "description": "GHL toolkit for Italian dental clinics (MCP + workflow schemas + setup automation).",
+      "description": "GHL automation toolkit (patched MCP + canonical workflow schemas + API quirks reference).",
       "version": "0.1.0"
     }
   ]

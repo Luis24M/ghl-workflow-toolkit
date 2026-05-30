@@ -1,9 +1,9 @@
 {
-  "name": "ghl-italian-dental",
+  "name": "ghl-workflow-toolkit",
   "version": "0.1.0",
-  "description": "GoHighLevel toolkit for Italian dental clinics — bundles the BusyBee3333 MCP server (patched), canonical workflow schemas, API quirks reference, and Firebase auth setup.",
+  "description": "GoHighLevel automation toolkit for Claude Code — bundles the BusyBee3333 MCP server (patched for correct workflow chaining), canonical workflow action schemas, API quirks reference, and Firebase auth setup. Works with any GHL account.",
   "author": "Luis Morales <handel.development.team@gmail.com>",
-  "homepage": "https://github.com/luismorales/ghl-italian-dental",
+  "homepage": "https://github.com/Luis24M/ghl-workflow-toolkit",
   "userConfig": [
     {
       "key": "pit",

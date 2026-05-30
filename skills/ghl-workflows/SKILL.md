@@ -1,6 +1,6 @@
 ---
 name: ghl-workflows
-description: Canonical schemas and API quirks for GoHighLevel workflows, custom fields, pipelines, calendars, and templates. Read this skill BEFORE creating or updating any workflow, custom field, or sub-account configuration via the GHL MCP — the MCP's own tool descriptions are incomplete and produce empty/broken schemas if used as-is. Covers wait actions (time vs appointment), if_else 3-node branching, email/SMS, MONETARY→MONETORY mapping, what is UI-only (forms, pipelines create, snapshot push), Firebase auth and rate limits.
+description: Canonical schemas and API quirks for GoHighLevel workflows, custom fields, pipelines, calendars, and templates. Read this skill BEFORE creating or updating any workflow, custom field, or sub-account configuration via the GHL MCP — the MCP's own tool descriptions are incomplete and produce empty/broken schemas if used as-is. Covers wait actions (time vs appointment), if_else 3-node branching, email/SMS, the MONETARY→MONETORY mapping, what is UI-only (forms, pipelines create, snapshot push), Firebase auth and rate limits. Use whenever the user asks anything involving GHL automations.
 ---
 
 # GoHighLevel — canonical schemas & quirks
@@ -30,4 +30,4 @@ The BusyBee3333 MCP exposes 834 tools but its descriptions are incomplete or sta
 
 **4. Email `attributes.html`, not `body`.** Plain-text bodies are ignored in the UI.
 
-**5. Trust the project's `~/.claude/projects/<this-project>/memory/` directory** if it exists — it holds the user's previous quirks/learnings beyond what this skill bundles.
+**5. Trust the project's per-project memory directory** (e.g. `~/.claude/projects/<id>/memory/`) if it exists — it holds previous quirks/learnings beyond what this skill bundles. Update memory if you discover new quirks during a session.

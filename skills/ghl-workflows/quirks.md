@@ -6,7 +6,7 @@ Non-obvious behaviors and limitations discovered the hard way. Consult before pr
 
 ## 1. Sub-account timezone defaults to **browser locale**, not country
 
-When you create a sub-account from the agency UI, GHL sets the timezone of the **agency owner's browser** as the default — ignoring the country you selected. Italian dental clinics created from a Spain-based browser end up with `Europe/Madrid`. **Always fix after creating.**
+When you create a sub-account from the agency UI, GHL sets the timezone of the **agency owner's browser** as the default — ignoring the country you selected. A client based in country A created from a browser in country B will end up with country B's timezone. **Always fix after creating.**
 
 Fix via PUT `/locations/{id}` with payload filtered (see #2).
 
@@ -127,18 +127,8 @@ If `GHL_AGENCY_API_KEY` is not set, agency-level tools will return 401. That is 
 
 ## 11. Custom Values for per-client URL config
 
-Instead of hardcoding URLs (calendar links, NPS forms, Google review links) in workflow templates, create **Custom Values** at the location level and reference them as `{{ custom_values.<key> }}` in SMS/email actions.
+Instead of hardcoding per-client URLs (calendar links, review forms, public booking pages) in workflow templates, create **Custom Values** at the location level and reference them as `{{ custom_values.<key> }}` in SMS/email actions.
 
-The 9 used in the dental snapshot:
+This makes a snapshot reusable across clients: when deploying to a new client, you only fill in the Custom Values per client, and every workflow/template that references them updates automatically.
 
-- `link_calendario`
-- `link_nps`
-- `link_preventivo_pdf`
-- `link_recensione_google`
-- `link_referral`
-- `link_galleria`
-- `indicazioni_post_trattamento`
-- `testimonianza_default`
-- `link_privacy`
-
-When deploying the snapshot to a new client, only these 9 values need to be filled in per client — everything else is template-ready.
+Use `create_location_custom_value` / `get_location_custom_values` / `update_location_custom_value` tools.
