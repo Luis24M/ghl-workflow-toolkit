@@ -1,6 +1,6 @@
 {
   "name": "ghl-workflow-toolkit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "GoHighLevel automation toolkit for Claude Code — bundles the BusyBee3333 MCP server (patched for correct workflow chaining), canonical workflow action schemas, API quirks reference, and Firebase auth setup. Works with any GHL account.",
   "author": {
     "name": "Luis Morales",
@@ -10,34 +10,34 @@
   "homepage": "https://github.com/Luis24M/ghl-workflow-toolkit",
   "userConfig": {
     "pit": {
-      "label": "Sub-account PIT (recommended: skip, use /ghl-workflow-toolkit:start)",
+      "title": "Sub-account PIT (recommended: skip, use /ghl-workflow-toolkit:start)",
       "type": "string",
       "sensitive": true,
       "required": false,
       "description": "Optional at install time. Run /ghl-workflow-toolkit:start after install — the wizard captures all credentials interactively and writes them to ~/.ghl-workflow-toolkit/credentials.env."
     },
     "location_id": {
-      "label": "Sub-account Location ID",
+      "title": "Sub-account Location ID",
       "type": "string",
       "required": false,
       "description": "Visible in the URL when you are inside the sub-account."
     },
     "firebase_api_key": {
-      "label": "Firebase API key",
+      "title": "Firebase API key",
       "type": "string",
       "sensitive": true,
       "required": false,
       "description": "Captured from the IndexedDB snippet (DevTools console)."
     },
     "firebase_refresh_token": {
-      "label": "Firebase refresh token",
+      "title": "Firebase refresh token",
       "type": "string",
       "sensitive": true,
       "required": false,
       "description": "Captured from the IndexedDB snippet (lasts weeks; re-capture if it expires)."
     },
     "agency_pit": {
-      "label": "Agency PIT token (optional)",
+      "title": "Agency PIT token (optional)",
       "type": "string",
       "sensitive": true,
       "required": false,
